@@ -13,7 +13,7 @@ function App() {
 
         {/* Protected Home */}
         <Route
-          path="/home"
+          path="/Home"
           element={
             <ProtectedRoute>
               <Home />
@@ -23,7 +23,7 @@ function App() {
 
         {/* Protected Register Business */}
         <Route
-          path="/register-business"
+          path="/RegisterBusiness"
           element={
             <ProtectedRoute>
               <RegisterBusiness />
