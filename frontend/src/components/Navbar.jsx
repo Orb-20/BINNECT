@@ -20,6 +20,10 @@ function Navbar() {
       <Link to="/RegisterBusiness" style={{ marginRight: "15px" }}>
   Register Business
 </Link>
+<Link to="/search" style={{ marginRight: "15px" }}>
+  Search Business
+</Link>
+
 
 
       <button onClick={handleLogout}>Logout</button>

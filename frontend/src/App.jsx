@@ -3,6 +3,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisterBusiness from "./pages/RegisterBusiness";
+import SearchBusiness from "./pages/SearchBusiness";
+
 
 function App() {
   return (
@@ -30,6 +32,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/search"
+  element={
+    <ProtectedRoute>
+      <SearchBusiness />
+    </ProtectedRoute>
+  }
+/>
+
       </Routes>
     </BrowserRouter>
   );
