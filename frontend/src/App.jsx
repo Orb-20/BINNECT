@@ -1,9 +1,13 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 function App() {
   return (
-    <div>
-      <h1>BINNECT</h1>
-      <p>B2B Discovery Platform</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<h2>Login Page</h2>} />
+        <Route path="/home" element={<h2>Home Page</h2>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
