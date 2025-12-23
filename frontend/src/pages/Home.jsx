@@ -2,20 +2,23 @@ import Navbar from "../components/Navbar";
 
 function Home() {
   return (
-    <div>
+    <>
       <Navbar />
-
       <div style={{ padding: "40px" }}>
         <h2>Welcome to BINNECT</h2>
-        <p>B2B Discovery Platform</p>
+        <p>
+          Discover better B2B services, register your business, and connect
+          directly with other businesses.
+        </p>
 
         <ul>
-          <li>Recommended Businesses</li>
-          <li>Search for Services</li>
-          <li>Register Your Business</li>
+          <li>✔ Register your business</li>
+          <li>✔ Find service providers</li>
+          <li>✔ No middlemen</li>
+          <li>✔ Transparent & trusted</li>
         </ul>
       </div>
-    </div>
+    </>
   );
 }
 

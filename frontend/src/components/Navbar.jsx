@@ -17,6 +17,10 @@ function Navbar() {
       <Link to="/home" style={{ marginRight: "15px" }}>
         Home
       </Link>
+      <Link to="/RegisterBusiness" style={{ marginRight: "15px" }}>
+  Register Business
+</Link>
+
 
       <button onClick={handleLogout}>Logout</button>
     </nav>

@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,7 +30,6 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
         <br /><br />
 
         <input
@@ -40,7 +39,6 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-
         <br /><br />
 
         <button type="submit">Login</button>
