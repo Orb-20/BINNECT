@@ -1,15 +1,21 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Temporary login logic (Firebase later)
-    navigate("/Home");
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/home");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -17,29 +23,25 @@ function Login() {
       <h2>BINNECT Login</h2>
 
       <form onSubmit={handleLogin}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        <br />
+        <br /><br />
 
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        <br />
+        <br /><br />
 
         <button type="submit">Login</button>
       </form>
