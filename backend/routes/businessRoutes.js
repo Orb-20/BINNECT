@@ -11,5 +11,8 @@ router.post("/register", verifyToken, registerBusiness);
 
 // Get logged-in user's businesses
 router.get("/my", verifyToken, getMyBusinesses);
+// Search businesses
+router.get("/search", verifyToken, searchBusinesses);
+
 
 module.exports = router;
