@@ -3,8 +3,9 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import BusinessRegistration from "./pages/BusinessRegistration";
-import Search from "./pages/Search";
+import BusinessRegistration from "./pages/RegisterBusiness";
+// ✅ FIX: Import from the correct file name 'SearchBusiness'
+import Search from "./pages/SearchBusiness";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
