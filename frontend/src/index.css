@@ -6,43 +6,44 @@
 
 @layer base {
   body {
-    @apply bg-pearl text-graphite font-sans antialiased overflow-x-hidden selection:bg-lavender/30 selection:text-royal;
+    /* Default to the cleaner soft lavender/off-white for search & internal pages */
+    @apply bg-pearl text-graphite font-sans antialiased overflow-x-hidden selection:bg-twilight/20 selection:text-royal;
   }
 }
 
 @layer utilities {
-  /* 🎨 OPTIONAL: "Quiet Luxury" Grain Layer */
   .bg-noise {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
   }
 }
 
 @layer components {
-  /* Elegant Input */
+  /* Elegant Input - Updated focus to Twilight Purple */
   .input-primary {
-    @apply w-full px-4 py-3 rounded-lg bg-ivory border border-lavender/40 text-graphite 
-    placeholder:text-slate/40 focus:outline-none focus:ring-2 focus:ring-dusty/10 focus:border-dusty/40 
-    transition-all duration-300 ease-out shadow-sm hover:border-lavender;
+    @apply w-full px-4 py-3 rounded-lg bg-ivory border border-lavender/60 text-graphite 
+    placeholder:text-slate/40 focus:outline-none focus:ring-2 focus:ring-twilight/10 focus:border-twilight/50 
+    transition-all duration-300 ease-out shadow-sm hover:border-dusty/50;
   }
 
-  /* Premium Button */
+  /* Premium Button - Twilight Purple to Night Indigo */
   .btn-primary {
-    @apply px-6 py-3 rounded-lg bg-gradient-to-r from-dusty to-royal text-white font-medium 
-    tracking-wide shadow-lg shadow-royal/10 hover:shadow-royal/20 hover:brightness-110 
+    @apply px-6 py-3 rounded-lg bg-twilight text-white font-medium 
+    tracking-wide shadow-lg shadow-twilight/20 hover:bg-royal hover:shadow-royal/30 
     active:scale-[0.98] transition-all duration-300 ease-out flex items-center justify-center gap-2;
   }
 
+  /* Secondary Button - Clean with Indigo borders */
   .btn-secondary {
-    @apply px-6 py-3 rounded-lg bg-ivory border border-lavender/60 text-royal font-medium
-    hover:bg-white hover:border-dusty/30 hover:shadow-md hover:shadow-lavender/10
+    @apply px-6 py-3 rounded-lg bg-ivory border border-royal/10 text-royal font-medium
+    hover:bg-white hover:border-royal/30 hover:shadow-md hover:shadow-royal/5
     transition-all duration-300 ease-out flex items-center justify-center gap-2;
   }
 
-  /* Ivory Mist Glass Card */
+  /* Ivory Mist Glass Card - Added subtle Indigo border accent */
   .premium-card {
-    @apply bg-ivory/80 backdrop-blur-md border border-white/60 shadow-soft rounded-2xl
+    @apply bg-ivory/90 backdrop-blur-md border border-royal/5 shadow-soft rounded-2xl
     relative overflow-hidden before:absolute before:inset-0 before:bg-card-sheen before:pointer-events-none
-    hover:shadow-lg hover:shadow-royal/5 transition-all duration-300;
+    hover:shadow-lg hover:shadow-royal/5 hover:border-royal/10 transition-all duration-300;
   }
   
   .badge-verified {

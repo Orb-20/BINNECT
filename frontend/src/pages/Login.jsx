@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, X, Hexagon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -10,7 +10,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Logic to handle Modal State vs Standalone Page
   const initialIsSignup = location.pathname === '/signup' || location.state?.isSignup;
   const [isLogin, setIsLogin] = useState(!initialIsSignup);
   const isModal = !!location.state?.backgroundLocation;
@@ -19,7 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Sync state with URL changes
   useEffect(() => {
      const currentlySignup = location.pathname === '/signup' || location.state?.isSignup;
      setIsLogin(!currentlySignup);
@@ -53,15 +51,15 @@ const Login = () => {
   };
 
   return (
-    // OVERLAY: Deep Royal Backdrop with Blur
+    // OVERLAY: Deep Lavender-Indigo Backdrop
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
         
-        {/* Backdrop */}
+        {/* Backdrop - darker overlay for focus */}
         <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-[#0F111A]/80 backdrop-blur-md transition-all" 
+            className="absolute inset-0 bg-[#0F0A1F]/80 backdrop-blur-md transition-all" 
             onClick={handleClose} 
         />
 
@@ -73,22 +71,22 @@ const Login = () => {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="
                 relative w-full max-w-[420px] 
-                bg-[#1C1E2E] /* Dark Royal Card Background */
+                bg-gradient-to-b from-[#1B003F] to-[#13002E] /* Night Indigo Gradient */
                 border border-white/10 
-                rounded-none /* Classic Professional = Sharp Corners or Slight Radius */
+                rounded-lg /* Updated to match new clean aesthetic */
                 shadow-2xl shadow-black/50
                 overflow-hidden
                 flex flex-col
             "
             onClick={(e) => e.stopPropagation()}
         >
-            {/* Top Accent Line */}
-            <div className="h-1 w-full bg-gradient-to-r from-blue-400 via-white to-blue-400 opacity-50"></div>
+            {/* Top Accent Line - Twilight Purple */}
+            <div className="h-1 w-full bg-gradient-to-r from-twilight via-dusty to-twilight opacity-70"></div>
 
             {/* Close Button */}
             <button 
                 onClick={handleClose}
-                className="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors z-10"
+                className="absolute top-5 right-5 text-lavender hover:text-white transition-colors z-10"
             >
                 <X size={22} />
             </button>
@@ -109,7 +107,7 @@ const Login = () => {
                     <h2 className="text-2xl font-serif tracking-wide text-white uppercase">
                         {isLogin ? "Member Login" : "Join Binnect"}
                     </h2>
-                    <p className="text-blue-200/60 text-xs tracking-[0.2em] mt-2 uppercase font-medium">
+                    <p className="text-lavender/60 text-xs tracking-[0.2em] mt-2 uppercase font-medium">
                         Professional Network
                     </p>
                 </div>
@@ -119,21 +117,21 @@ const Login = () => {
                     
                     {/* Email Input */}
                     <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold text-blue-200/70 tracking-wider pl-1">
+                        <label className="text-[10px] uppercase font-bold text-lavender/70 tracking-wider pl-1">
                             Email Address
                         </label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <Mail size={18} className="text-slate-400 group-focus-within:text-blue-400 transition-colors" />
+                                <Mail size={18} className="text-slate-400 group-focus-within:text-dusty transition-colors" />
                             </div>
                             <input
                                 type="email"
                                 className="
                                     w-full pl-12 pr-4 py-3.5 
-                                    bg-[#151725] border border-white/10 
+                                    bg-[#2A1B4A]/50 border border-white/10 
                                     text-white placeholder-slate-500 
-                                    focus:outline-none focus:border-blue-400/50 focus:ring-1 focus:ring-blue-400/20 
-                                    transition-all rounded-sm
+                                    focus:outline-none focus:border-twilight/80 focus:ring-1 focus:ring-twilight/30 
+                                    transition-all rounded-md
                                 "
                                 placeholder="name@company.com"
                                 value={email}
@@ -145,21 +143,21 @@ const Login = () => {
 
                     {/* Password Input */}
                     <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold text-blue-200/70 tracking-wider pl-1">
+                        <label className="text-[10px] uppercase font-bold text-lavender/70 tracking-wider pl-1">
                             Password
                         </label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <Lock size={18} className="text-slate-400 group-focus-within:text-blue-400 transition-colors" />
+                                <Lock size={18} className="text-slate-400 group-focus-within:text-dusty transition-colors" />
                             </div>
                             <input
                                 type="password"
                                 className="
                                     w-full pl-12 pr-4 py-3.5 
-                                    bg-[#151725] border border-white/10 
+                                    bg-[#2A1B4A]/50 border border-white/10 
                                     text-white placeholder-slate-500 
-                                    focus:outline-none focus:border-blue-400/50 focus:ring-1 focus:ring-blue-400/20 
-                                    transition-all rounded-sm
+                                    focus:outline-none focus:border-twilight/80 focus:ring-1 focus:ring-twilight/30 
+                                    transition-all rounded-md
                                 "
                                 placeholder="••••••••"
                                 value={password}
@@ -169,17 +167,18 @@ const Login = () => {
                         </div>
                     </div>
 
-                    {/* Action Button */}
+                    {/* Action Button - Twilight Purple */}
                     <button
                         type="submit"
                         disabled={loading}
                         className="
                             w-full mt-6 py-4 
-                            bg-white text-[#0F111A] 
+                            bg-twilight text-white 
                             font-bold uppercase tracking-widest text-xs
-                            hover:bg-blue-50 transition-all duration-300
+                            hover:bg-royal transition-all duration-300
                             flex items-center justify-center gap-2
-                            border border-transparent hover:tracking-[0.2em]
+                            border border-transparent hover:tracking-[0.2em] rounded-md
+                            shadow-lg shadow-twilight/20
                         "
                     >
                         {loading ? <Loader2 className="animate-spin" size={18} /> : (
@@ -201,9 +200,9 @@ const Login = () => {
                         className="text-slate-400 hover:text-white transition-colors text-xs font-medium"
                     >
                         {isLogin ? (
-                            <span>Don't have an account? <span className="text-blue-300 underline underline-offset-4 decoration-blue-300/30">Apply Here</span></span>
+                            <span>Don't have an account? <span className="text-dusty underline underline-offset-4 decoration-dusty/30">Apply Here</span></span>
                         ) : (
-                            <span>Already a member? <span className="text-blue-300 underline underline-offset-4 decoration-blue-300/30">Login Here</span></span>
+                            <span>Already a member? <span className="text-dusty underline underline-offset-4 decoration-dusty/30">Login Here</span></span>
                         )}
                     </button>
                 </div>
