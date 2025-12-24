@@ -19,11 +19,12 @@ const SearchBusiness = () => {
     setHasSearched(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/businesses/search?query=${query}&city=${city}`, {
+      // FIX: Corrected query param to 'service' and Endpoint to /api/business/search
+      const response = await fetch(`http://localhost:5000/api/business/search?service=${query}&city=${city}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
-      setResults(data);
+      setResults(data.businesses || []);
     } catch (error) {
       toast.error("Network error");
     } finally {
@@ -58,8 +59,8 @@ const SearchBusiness = () => {
                         onChange={(e) => setCity(e.target.value)}
                     />
                 </div>
-                <button type="submit" className="btn-royal md:w-auto w-full rounded-lg">
-                    Search
+                <button type="submit" className="btn-primary md:w-auto w-full rounded-lg shadow-royal/20">
+                    {loading ? 'Searching...' : 'Search'}
                 </button>
             </form>
         </div>
@@ -76,30 +77,29 @@ const SearchBusiness = () => {
                     className="premium-card p-6 hover:translate-y-[-4px] group"
                 >
                     <div className="flex justify-between items-start mb-4">
-                        <div className="w-12 h-12 rounded-xl bg-cloud flex items-center justify-center text-royal group-hover:bg-royal group-hover:text-white transition-colors">
+                        <div className="w-12 h-12 rounded-xl bg-pearl border border-lavender/30 flex items-center justify-center text-royal group-hover:bg-royal group-hover:text-white transition-colors">
                             <Briefcase size={20} />
                         </div>
-                        {biz.rating && (
-                            <span className="flex items-center gap-1 text-xs font-bold text-sage bg-sage/10 px-2 py-1 rounded-md border border-sage/20">
-                                <CheckCircle size={12} /> Verified
-                            </span>
-                        )}
+                        <span className="badge-verified">
+                            <CheckCircle size={12} /> Verified
+                        </span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-royal mb-1">{biz.name}</h3>
+                    {/* FIX: Using businessName */}
+                    <h3 className="text-xl font-bold text-royal mb-1">{biz.businessName}</h3>
                     <p className="text-slate text-sm mb-4 flex items-center gap-1">
-                        <MapPin size={14} className="text-dusty"/> {biz.city}, {biz.state}
+                        <MapPin size={14} className="text-dusty"/> {biz.location.city}, {biz.location.state}
                     </p>
 
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {biz.services.slice(0, 3).map((s, i) => (
-                            <span key={i} className="text-xs font-medium text-slate bg-white border border-lavender/50 px-2 py-1 rounded">
+                        {biz.servicesOffered.slice(0, 3).map((s, i) => (
+                            <span key={i} className="text-xs font-medium text-slate bg-pearl border border-lavender/40 px-2 py-1 rounded">
                                 {s}
                             </span>
                         ))}
                     </div>
 
-                    <div className="pt-4 border-t border-lavender/30 flex justify-between items-center">
+                    <div className="pt-4 border-t border-lavender/20 flex justify-between items-center">
                         <div className="flex items-center gap-1 text-amber-500">
                              <Star size={14} fill="currentColor"/>
                              <span className="text-sm font-bold text-graphite">{biz.rating || 4.8}</span>

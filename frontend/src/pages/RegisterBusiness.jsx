@@ -8,8 +8,10 @@ import toast from 'react-hot-toast';
 const RegisterBusiness = () => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
+  
+  // FIX: Using businessName to match schema
   const [formData, setFormData] = useState({
-    name: '',
+    businessName: '',
     industry: '',
     city: '',
     state: '',
@@ -33,20 +35,34 @@ const RegisterBusiness = () => {
     try {
       const servicesArray = formData.services.split(',').map(s => s.trim());
       
-      const response = await fetch('http://localhost:5000/api/businesses', {
+      const payload = {
+        businessName: formData.businessName,
+        industry: formData.industry,
+        location: {
+            city: formData.city,
+            state: formData.state
+        },
+        servicesOffered: servicesArray,
+        pricingRange: formData.pricing
+      };
+
+      // FIX: Correct Endpoint
+      const response = await fetch('http://localhost:5000/api/business/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ ...formData, services: servicesArray })
+        body: JSON.stringify(payload)
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         toast.success("Business Registered Successfully!");
         navigate('/search');
       } else {
-        toast.error("Registration failed. Please try again.");
+        toast.error(data.message || "Registration failed.");
       }
     } catch (error) {
       console.error(error);
@@ -57,7 +73,7 @@ const RegisterBusiness = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
+    <div className="min-h-screen pt-24 pb-12 px-4 bg-pearl">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -68,7 +84,7 @@ const RegisterBusiness = () => {
           <p className="text-slate mt-2">Join the network and start receiving direct inquiries.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-card p-8 md:p-10 space-y-6">
+        <form onSubmit={handleSubmit} className="premium-card p-8 md:p-10 space-y-6">
             
             {/* Business Name */}
             <div>
@@ -76,7 +92,7 @@ const RegisterBusiness = () => {
                     <Building size={16} className="text-dusty"/> Business Name
                 </label>
                 <input
-                    name="name"
+                    name="businessName" 
                     className="input-primary"
                     placeholder="e.g. Acme Logistics"
                     onChange={handleChange}

@@ -7,30 +7,42 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Backgrounds
-        pearl: '#F6F7FB',
-        cloud: '#ECEFF6',
-        ivory: '#FAFBFD',
+        // --- The "Royal Executive" Palette ---
         
-        // Brand / Indigos
-        royal: '#2D2A5F',
-        midnight: '#23204A',
-        dusty: '#4B4FA8',
-        lavender: '#C7C9EB',
+        // 1. Canvas & Surfaces
+        pearl: '#F6F7FB',       // Base Canvas
+        'pearl-dark': '#EEF1F8', // Hero Mid-tone
+        'pearl-deep': '#E6EAF4', // Hero Bottom-tone
+        ivory: '#FAFBFD',       // Card Surface
+        cloud: '#ECEFF6',       // Soft transitions
         
-        // Text
-        graphite: '#1C1E23',
+        // 2. Brand Identity
+        royal: '#2D2A5F',   // Primary Brand
+        midnight: '#23204A', // Deep Contrast
+        dusty: '#4B4FA8',   // Soft Accents
+        
+        // 3. Typography
+        graphite: '#1C1E23', 
         slate: '#4B5563',
         
-        // Success
+        // 4. Utility
+        lavender: '#C7C9EB',
         sage: '#7FA89C',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'], // Ensure you have a clean font
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #ECEFF6 0deg, #F6F7FB 180deg)',
+        // ✅ THE CORRECT SOLUTION: Layered Gradient + Radial Glow
+        'hero-premium': `
+          radial-gradient(circle at 50% 30%, rgba(75, 79, 168, 0.10), transparent 60%),
+          linear-gradient(180deg, #F6F7FB 0%, #EEF1F8 55%, #E6EAF4 100%)
+        `,
+        'card-sheen': 'linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%)',
+      },
+      boxShadow: {
+        'soft': '0 4px 20px -2px rgba(45, 42, 95, 0.04)',
+        'glow': '0 0 15px rgba(75, 79, 168, 0.1)',
       }
     },
   },
