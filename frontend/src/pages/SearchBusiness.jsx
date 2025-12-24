@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, MapPin, Briefcase, Star, Filter } from 'lucide-react';
+import { Search, MapPin, Briefcase, CheckCircle, Filter, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const SearchBusiness = () => {
@@ -14,129 +14,114 @@ const SearchBusiness = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!token) {
-        toast.error("Please login to search.");
-        return;
-    }
+    if (!token) return toast.error("Please login first");
     setLoading(true);
     setHasSearched(true);
 
     try {
       const response = await fetch(`http://localhost:5000/api/businesses/search?query=${query}&city=${city}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
       setResults(data);
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch results");
+      toast.error("Network error");
     } finally {
         setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-24 px-4 sm:px-6 lg:px-8 pb-12">
+    <div className="min-h-screen pt-28 px-6 bg-pearl">
       <div className="max-w-7xl mx-auto">
         
         {/* Search Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-royal mb-4">Find Your Next Partner</h2>
-          
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto relative glass-card p-2 flex flex-col md:flex-row gap-2">
-             <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate/40" size={20}/>
-                <input 
-                    type="text" 
-                    placeholder="Service or Industry (e.g. Plumbing)" 
-                    className="w-full pl-10 pr-4 py-3 bg-transparent focus:outline-none text-graphite placeholder:text-slate/50"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-             </div>
-             <div className="w-px bg-lavender/50 hidden md:block"></div>
-             <div className="flex-1 relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate/40" size={20}/>
-                <input 
-                    type="text" 
-                    placeholder="City (Optional)" 
-                    className="w-full pl-10 pr-4 py-3 bg-transparent focus:outline-none text-graphite placeholder:text-slate/50"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                />
-             </div>
-             <button type="submit" className="btn-primary md:w-auto w-full">
-                 Search
-             </button>
-          </form>
+        <div className="mb-12 text-center">
+            <h1 className="text-4xl font-bold text-royal mb-6">Discover Partners</h1>
+            <form onSubmit={handleSearch} className="premium-card p-3 max-w-4xl mx-auto flex flex-col md:flex-row gap-2">
+                <div className="flex-1 relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate/40" />
+                    <input 
+                        className="w-full bg-transparent p-4 pl-12 text-graphite focus:outline-none placeholder:text-slate/40"
+                        placeholder="Service, Industry or Keyword..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                </div>
+                <div className="w-[1px] bg-lavender/30 hidden md:block mx-2"></div>
+                <div className="flex-1 relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate/40" />
+                    <input 
+                        className="w-full bg-transparent p-4 pl-12 text-graphite focus:outline-none placeholder:text-slate/40"
+                        placeholder="City or State"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
+                </div>
+                <button type="submit" className="btn-royal md:w-auto w-full rounded-lg">
+                    Search
+                </button>
+            </form>
         </div>
 
-        {/* Results Grid */}
-        <div className="mt-8">
-            {loading ? (
-                <div className="flex justify-center py-20">
-                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-royal"></div>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <AnimatePresence>
-                    {results.map((biz, index) => (
-                        <motion.div
-                            key={biz._id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="glass-card hover:shadow-2xl transition-all duration-300 group overflow-hidden border-l-4 border-l-transparent hover:border-l-dusty"
-                        >
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="p-3 bg-cloud rounded-lg text-royal group-hover:bg-royal group-hover:text-white transition-colors">
-                                        <Briefcase size={24} />
-                                    </div>
-                                    <span className="flex items-center gap-1 text-sm font-semibold text-royal bg-lavender/20 px-2 py-1 rounded">
-                                        <Star size={14} className="fill-royal text-royal"/> {biz.rating || 4.5}
-                                    </span>
-                                </div>
-                                
-                                <h3 className="text-xl font-bold text-graphite mb-1">{biz.name}</h3>
-                                <p className="text-slate text-sm mb-4 flex items-center gap-1">
-                                    <MapPin size={14} /> {biz.city}, {biz.state}
-                                </p>
+        {/* Results */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+            <AnimatePresence>
+            {results.map((biz, index) => (
+                <motion.div
+                    key={biz._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="premium-card p-6 hover:translate-y-[-4px] group"
+                >
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-cloud flex items-center justify-center text-royal group-hover:bg-royal group-hover:text-white transition-colors">
+                            <Briefcase size={20} />
+                        </div>
+                        {biz.rating && (
+                            <span className="flex items-center gap-1 text-xs font-bold text-sage bg-sage/10 px-2 py-1 rounded-md border border-sage/20">
+                                <CheckCircle size={12} /> Verified
+                            </span>
+                        )}
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-royal mb-1">{biz.name}</h3>
+                    <p className="text-slate text-sm mb-4 flex items-center gap-1">
+                        <MapPin size={14} className="text-dusty"/> {biz.city}, {biz.state}
+                    </p>
 
-                                <div className="space-y-3 mb-6">
-                                    <div className="flex flex-wrap gap-2">
-                                        {biz.services.slice(0, 3).map((service, i) => (
-                                            <span key={i} className="text-xs bg-white border border-lavender/50 text-slate px-2 py-1 rounded-md">
-                                                {service}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                        {biz.services.slice(0, 3).map((s, i) => (
+                            <span key={i} className="text-xs font-medium text-slate bg-white border border-lavender/50 px-2 py-1 rounded">
+                                {s}
+                            </span>
+                        ))}
+                    </div>
 
-                                <div className="flex items-center justify-between pt-4 border-t border-lavender/30">
-                                    <span className="text-sm font-medium text-slate">
-                                        {biz.pricing || "Contact for pricing"}
-                                    </span>
-                                    <button className="text-dusty font-semibold text-sm hover:text-royal transition-colors">
-                                        View Details &rarr;
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                    </AnimatePresence>
-                </div>
-            )}
-            
-            {hasSearched && results.length === 0 && !loading && (
-                <div className="text-center py-20 text-slate">
-                    <Filter size={48} className="mx-auto mb-4 text-lavender" />
-                    <p className="text-xl">No businesses found matching your criteria.</p>
-                </div>
-            )}
+                    <div className="pt-4 border-t border-lavender/30 flex justify-between items-center">
+                        <div className="flex items-center gap-1 text-amber-500">
+                             <Star size={14} fill="currentColor"/>
+                             <span className="text-sm font-bold text-graphite">{biz.rating || 4.8}</span>
+                        </div>
+                        <button className="text-sm font-bold text-dusty hover:text-royal transition-colors">
+                            View Profile &rarr;
+                        </button>
+                    </div>
+                </motion.div>
+            ))}
+            </AnimatePresence>
         </div>
+
+        {hasSearched && results.length === 0 && !loading && (
+             <motion.div initial={{opacity:0}} animate={{opacity:1}} className="text-center py-20">
+                <div className="w-16 h-16 bg-lavender/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Filter className="text-dusty" size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-royal">No Results Found</h3>
+                <p className="text-slate">Try adjusting your search terms or location.</p>
+             </motion.div>
+        )}
       </div>
     </div>
   );

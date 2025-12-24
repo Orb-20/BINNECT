@@ -1,93 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/useAuth';
-import { Menu, X, Building2, LogOut, User } from 'lucide-react';
+import { Menu, X, Hexagon, LogOut, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Add glass effect on scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+    await logout();
+    navigate('/login');
   };
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Search Partners', path: '/search' },
-    { name: 'Register Business', path: '/register' },
+    { name: 'Search', path: '/search' },
+    { name: 'Register', path: '/register' },
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gradient-to-r from-royal via-midnight to-royal text-white shadow-lg shadow-midnight/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+    <nav 
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled 
+        ? 'bg-midnight/90 backdrop-blur-md shadow-lg border-b border-white/5 py-3' 
+        : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center">
           
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
-              <Building2 className="w-6 h-6 text-lavender" />
+          {/* Brand Identity */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-dusty to-royal shadow-lg shadow-royal/30 group-hover:scale-105 transition-transform duration-300">
+              <Hexagon className="text-white w-6 h-6" strokeWidth={2.5} />
             </div>
-            <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-lavender">
+            <span className={`text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-lavender ${!scrolled && 'text-royal'}`}>
               BINNECT
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`relative px-1 py-2 text-sm font-medium transition-colors duration-300 
-                  ${location.pathname === link.path ? 'text-white' : 'text-lavender hover:text-white'}`}
-              >
-                {link.name}
-                {location.pathname === link.path && (
-                  <motion.div
-                    layoutId="underline"
-                    className="absolute left-0 bottom-0 w-full h-0.5 bg-dusty shadow-[0_0_8px_rgba(75,79,168,0.8)]"
-                  />
-                )}
-              </Link>
-            ))}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            <div className="flex bg-white/5 rounded-full p-1 border border-white/10 backdrop-blur-sm mr-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300"
+                >
+                  {location.pathname === link.path && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      className="absolute inset-0 bg-white/10 rounded-full"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className={`${location.pathname === link.path ? 'text-white' : 'text-lavender hover:text-white'}`}>
+                    {link.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
 
             {user ? (
-              <div className="flex items-center gap-4 ml-4">
-                <div className="flex items-center gap-2 text-sm text-lavender/80 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
-                  <User size={14} />
-                  <span>{user.email}</span>
+              <div className="flex items-center gap-4">
+                <div className="text-right hidden lg:block">
+                  <p className="text-xs text-lavender font-medium">Signed in as</p>
+                  <p className="text-sm text-white font-semibold truncate max-w-[150px]">{user.email}</p>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-lavender hover:text-white hover:bg-white/10 rounded-full transition-all"
+                  className="p-2.5 bg-white/5 hover:bg-red-500/20 text-lavender hover:text-red-200 rounded-full border border-white/10 transition-all duration-300"
+                  title="Sign Out"
                 >
-                  <LogOut size={20} />
+                  <LogOut size={18} />
                 </button>
               </div>
             ) : (
-              <Link to="/login" className="btn-primary py-2 px-4 text-sm bg-none bg-white text-royal hover:bg-ivory border-0">
+              <Link to="/login" className="btn-royal py-2.5 px-6 text-sm shadow-none">
                 Login
               </Link>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-lavender hover:text-white transition-colors"
-            >
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
+          {/* Mobile Toggle */}
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+            {isOpen ? <X /> : <Menu />}
+          </button>
         </div>
       </div>
 
@@ -98,27 +108,19 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-midnight border-t border-white/10"
+            className="md:hidden bg-midnight border-t border-white/10 overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-6 space-y-2">
+            <div className="px-6 py-8 space-y-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-3 rounded-md text-base font-medium text-lavender hover:text-white hover:bg-white/5"
+                  className="block text-lg font-medium text-lavender hover:text-white pl-4 border-l-2 border-transparent hover:border-dusty transition-all"
                 >
                   {link.name}
                 </Link>
               ))}
-              {user && (
-                 <button
-                 onClick={() => { handleLogout(); setIsOpen(false); }}
-                 className="w-full text-left px-3 py-3 rounded-md text-base font-medium text-red-300 hover:bg-white/5"
-               >
-                 Sign Out
-               </button>
-              )}
             </div>
           </motion.div>
         )}

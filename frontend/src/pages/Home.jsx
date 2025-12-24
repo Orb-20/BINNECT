@@ -1,97 +1,127 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Globe, Zap } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Globe, Zap, Users, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-};
-
-const staggerContainer = {
-  visible: { transition: { staggerChildren: 0.1 } }
-};
 
 const Home = () => {
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-royal/5 rounded-full blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-dusty/5 rounded-full blur-3xl opacity-50 -translate-x-1/2 translate-y-1/2"></div>
-        </div>
+    <div className="min-h-screen relative overflow-hidden bg-pearl">
+      
+      {/* --- Ambient Background Gradients --- */}
+      <div className="absolute top-0 left-0 w-full h-[800px] bg-gradient-to-b from-royal to-pearl -z-20" />
+      <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-dusty/20 rounded-full blur-[120px] -z-10 animate-pulse" />
+      <div className="absolute bottom-0 left-[-10%] w-[600px] h-[600px] bg-lavender/30 rounded-full blur-[100px] -z-10" />
 
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <motion.span variants={fadeInUp} className="inline-block py-1 px-3 rounded-full bg-lavender/20 text-royal text-sm font-semibold tracking-wide border border-royal/10 mb-6">
-            The Future of B2B Networking
-          </motion.span>
+      {/* --- Hero Section --- */}
+      <section className="pt-40 pb-20 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
           
-          <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold text-graphite tracking-tight mb-6">
-            Connect <span className="text-transparent bg-clip-text bg-gradient-to-r from-royal to-dusty">Directly.</span><br />
-            No Middlemen.
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-lavender text-sm mb-8"
+          >
+            <span className="w-2 h-2 rounded-full bg-sage animate-pulse"></span>
+            The #1 Trusted B2B Network
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-6xl md:text-8xl font-bold tracking-tight text-white mb-8"
+          >
+            Connect without <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lavender to-white">Compromise.</span>
           </motion.h1>
-          
-          <motion.p variants={fadeInUp} className="text-xl text-slate mb-10 max-w-2xl mx-auto leading-relaxed">
-            Binnect empowers businesses to register services, discover partners, and build long-term value chains without the noise.
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-lavender/80 max-w-2xl mx-auto mb-12 leading-relaxed"
+          >
+            Eliminate middlemen and establish direct, authoritative partnerships. 
+            Binnect provides the executive tools you need for serious B2B engagement.
           </motion.p>
-          
-          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/search" className="btn-primary">
-              Find Partners <ArrowRight size={18} />
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <Link to="/search" className="btn-royal text-lg">
+              Start Searching <ArrowRight size={20} />
             </Link>
-            <Link to="/register" className="btn-secondary">
+            <Link to="/register" className="btn-ghost text-white border-white/30 hover:bg-white/10 hover:text-white">
               Register Business
             </Link>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-20 bg-white/50 border-t border-lavender/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            <FeatureCard 
-              icon={<Globe className="text-dusty" size={32} />}
-              title="Global Reach"
-              desc="Expand your supply chain beyond local limits. Find partners across cities and states instantly."
+      {/* --- Stats Banner --- */}
+      <section className="border-y border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <Stat number="10k+" label="Active Businesses" />
+            <Stat number="$500M" label="Value Generated" />
+            <Stat number="98%" label="Trust Score" />
+            <Stat number="24/7" label="Support" />
+        </div>
+      </section>
+
+      {/* --- Value Proposition (Floating Cards) --- */}
+      <section className="py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ValueCard 
+              icon={<Globe className="text-royal" size={32} />}
+              title="Global Authority"
+              desc="Access a curated network of verified suppliers across state and national borders."
+              delay={0}
             />
-            <FeatureCard 
+            <ValueCard 
               icon={<ShieldCheck className="text-sage" size={32} />}
               title="Verified Trust"
-              desc="Our recommendation engine prioritizes rated and verified businesses for safe collaboration."
+              desc="Our Sage Green verification badge ensures you only deal with legitimate entities."
+              delay={0.2}
             />
-            <FeatureCard 
-              icon={<Zap className="text-royal" size={32} />}
-              title="Direct Access"
-              desc="Cut out the agency fees. Speak directly to service providers and negotiate your own terms."
+            <ValueCard 
+              icon={<TrendingUp className="text-dusty" size={32} />}
+              title="Direct Growth"
+              desc="Remove agency fees from your bottom line. Negotiate terms that work for you."
+              delay={0.4}
             />
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>
   );
 };
 
-const FeatureCard = ({ icon, title, desc }) => (
-  <div className="glass-card p-8 hover:-translate-y-2 transition-transform duration-300">
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pearl to-cloud border border-white shadow-sm flex items-center justify-center mb-6">
+const Stat = ({ number, label }) => (
+  <div className="text-center">
+    <h4 className="text-4xl font-bold text-white mb-1">{number}</h4>
+    <p className="text-lavender text-sm uppercase tracking-wider">{label}</p>
+  </div>
+);
+
+const ValueCard = ({ icon, title, desc, delay }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay }}
+    className="premium-card p-10 group"
+  >
+    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pearl to-cloud border border-white flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm">
       {icon}
     </div>
-    <h3 className="text-xl font-bold text-royal mb-3">{title}</h3>
+    <h3 className="text-2xl font-bold text-graphite mb-4">{title}</h3>
     <p className="text-slate leading-relaxed">{desc}</p>
-  </div>
+  </motion.div>
 );
 
 export default Home;
