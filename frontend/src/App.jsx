@@ -1,48 +1,48 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./pages/Login";
 import RegisterBusiness from "./pages/RegisterBusiness";
 import SearchBusiness from "./pages/SearchBusiness";
-
+import ProtectedRoute from "./components/ProtectedRoute";
+import './index.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+            style: {
+                background: '#1C1E23',
+                color: '#fff',
+                border: '1px solid #2D2A5F'
+            },
+            success: {
+                iconTheme: {
+                    primary: '#7FA89C',
+                    secondary: '#fff',
+                },
+            },
+        }}
+      />
+      <Navbar />
       <Routes>
-        {/* Public Route */}
-        <Route path="/" element={<Login />} />
-
-        {/* Protected Home */}
-        <Route
-          path="/Home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Protected Register Business */}
-        <Route
-          path="/RegisterBusiness"
-          element={
-            <ProtectedRoute>
-              <RegisterBusiness />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-  path="/search"
-  element={
-    <ProtectedRoute>
-      <SearchBusiness />
-    </ProtectedRoute>
-  }
-/>
-
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={
+          <ProtectedRoute>
+            <RegisterBusiness />
+          </ProtectedRoute>
+        } />
+        <Route path="/search" element={
+          <ProtectedRoute>
+            <SearchBusiness />
+          </ProtectedRoute>
+        } />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
